@@ -51,6 +51,13 @@ contract BPool is BBronze, BToken, BMath {
         bytes           data
     ) anonymous;
 
+    event GULP_LOG_CALL(
+        bytes4  indexed sig,
+        address indexed caller,
+        bytes           data,
+        uint256 balance
+    ) anonymous;
+
     modifier _logs_() {
         emit LOG_CALL(msg.sig, msg.sender, msg.data);
         _;
@@ -333,11 +340,13 @@ contract BPool is BBronze, BToken, BMath {
     // Absorb any tokens that have been sent to this contract into the pool
     function gulp(address token)
         external
-        _logs_
+        // _logs_
         _lock_
     {
         require(_records[token].bound, "ERR_NOT_BOUND");
-        _records[token].balance = IERC20(token).balanceOf(address(this));
+        uint balance = IERC20(token).balanceOf(address(this));
+        _records[token].balance = balance;
+        emit GULP_LOG_CALL(msg.sig, msg.sender, msg.data, balance);
     }
 
     function getSpotPrice(address tokenIn, address tokenOut)

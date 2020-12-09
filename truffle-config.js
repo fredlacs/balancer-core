@@ -1,3 +1,9 @@
+const wrapProvider = require('arb-ethers-web3-bridge').wrapProvider
+const HDWalletProvider = require('@truffle/hdwallet-provider')
+const mnemonic =
+  'leg island worth fancy excuse exact travel adult blame pause erupt sad orange oven decade'
+const arbProviderUrl = 'http://127.0.0.1:8547'
+
 module.exports = {
     networks: {
         development: {
@@ -13,6 +19,20 @@ module.exports = {
             gas: 0xfffffffffff,
             gasPrice: 0x01,
         },
+        arbitrum: {
+            provider: function () {
+              // return wrapped provider:
+              return wrapProvider(
+                new HDWalletProvider(mnemonic, arbProviderUrl)
+              )
+            },
+            network_id: '*',
+            gasPrice: 0,
+            gasLimit: 99999999999999
+          },
+    },
+    mocha: {
+        enableTimeouts: false
     },
     // Configure your compilers
     compilers: {

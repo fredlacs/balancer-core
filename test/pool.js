@@ -40,6 +40,11 @@ contract('BPool', async (accounts) => {
         DAI = dai.address;
         XXX = xxx.address;
 
+        console.log("WETH", WETH)
+        console.log("MKR", MKR)
+        console.log("DAI", DAI)
+        console.log("XXX", XXX)
+        console.log("pool", POOL)
         /*
             Tests assume token prices
             WETH - $200
